@@ -1,7 +1,5 @@
 #! /usr/bin/env -S dotnet fsi
 
-open System.Text.RegularExpressions
-
 let lines =
     Seq.initInfinite (fun _ -> System.Console.ReadLine())
     |> Seq.takeWhile (fun line -> line <> null)
