@@ -1,30 +1,26 @@
 #! /usr/bin/env -S dotnet fsi
 
-let tap fn x =
-    fn x
-    x
-
 let lines =
     Seq.initInfinite (fun _ -> System.Console.ReadLine())
     |> Seq.takeWhile (fun line -> line <> null)
     |> Seq.toList
 
+let maxWithIndex = List.indexed >> List.sortByDescending snd >> List.head
+
+let toDigits = Seq.map (string >> int) >> Seq.toList
+let fromDigits = List.map string >> String.concat "" >> int64
+
 let joltage numDigits line =
-    let inputDigits = Seq.map (string >> int) line |> Seq.toList
+    let rec maxNDigits (n: int) (digits: int list) : int list =
+        if n < 1 then
+            []
+        else
+            let pool = List.take (List.length digits - n + 1) digits
+            let indexOfMax, maxValue = maxWithIndex pool
+            let digits' = List.skip (indexOfMax + 1) digits in
+            maxValue :: maxNDigits (n - 1) digits'
 
-    let rec groups (n: int) (digits: int list) : int list list =
-        match n with
-        | 0 -> List.empty
-        | 1 -> digits |> List.map (fun n -> [ n ])
-        | _ ->
-            digits
-            |> List.mapi (fun i d -> d, List.skip (i + 1) digits)
-            |> List.collect (fun (current, rest) -> groups (n - 1) rest |> List.map (fun r -> current :: r))
-
-    let toNum digits =
-        digits |> List.map string |> String.concat "" |> int64
-
-    inputDigits |> groups numDigits |> Seq.map toNum |> Seq.max
+    line |> toDigits |> maxNDigits numDigits |> fromDigits
 
 let part1 lines =
     lines |> List.map (joltage 2) |> List.sum
