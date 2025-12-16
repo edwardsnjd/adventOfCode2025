@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+cat <<-EOF
+digraph Q {
+  graph [rankdir=LR]; // TB LR BT RL
+  node [
+    style=filled
+    fillcolor="#fefedd"
+    fontname = "Monospace"
+    fontsize="10pt"
+    margin="0.1"
+  ];
+
+  you [fillcolor="palegreen"];
+  out [fillcolor="orangered"];
+
+$(sed -E '
+  s/(.*): (([^ ]+ ?)+)$/\1->{\2}/
+  s/ /, /g
+  s/.*/  &;/
+')
+}
+EOF
