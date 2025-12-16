@@ -12,6 +12,9 @@ digraph Q {
   ];
 
   you [fillcolor="palegreen"];
+  svr [fillcolor="green"];
+  fft [fillcolor="lightblue"];
+  dac [fillcolor="lightblue"];
   out [fillcolor="orangered"];
 
 $(sed -E '
