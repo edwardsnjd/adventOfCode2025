@@ -5,7 +5,7 @@ SHELL := bash
 
 .PHONY: loc.png
 loc.png:
-	@fd 'day' --extension 'fsx' --exec wc -l \
+	@fd 'day' --extension 'fsx' --extension 'pl' --exec wc -l \
 	| sort -k2,2 \
 	| awk '{print $$2, $$1}' \
 	| sed -E 's|^./||' \
